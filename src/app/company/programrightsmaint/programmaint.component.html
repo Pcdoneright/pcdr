@@ -1,0 +1,26 @@
+<div layout="column" class="widget-grid panel-nobox" [style.height.px]="wH">
+    <horizontal-split-pane #prmsp01 primary-component-minsize="35" secondary-component-minsize="35" local-storage-key="split-pane"
+        (on-ended-resizing)="onSPChange($event)" >
+        <div class="split-pane-content-primary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span class="text-nowrap">Group Right</span>
+                <button type="button" class="btn btn-success" (click)="groupsAdd()"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn btn-danger" (click)="groupsRemove()"><i class="fa fa-minus"></i> Remove</button>
+                <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+                <div class="container"></div>
+                <span class="text-nowrap">Rows: {{dESrvc.rowCount(groupsGrid)}}</span>
+            </nav>
+            <div id="prmgrid01" [style.height.px]="gH01"></div>
+        </div>
+        <div class="split-pane-content-secondary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span>Programs</span>
+                <button type="button" class="btn btn-success" (click)="groups_accessAdd()"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn btn-danger" (click)="groups_accessRemove()"><i class="fa fa-minus"></i> Remove</button>
+                <div class="container"></div>
+                <span class="text-nowrap">Rows: {{dESrvc.rowCount(groups_accessGrid)}}</span>
+            </nav>
+            <div id="prmgrid02" [style.height.px]="gH02"></div>
+        </div>
+    </horizontal-split-pane>
+</div>

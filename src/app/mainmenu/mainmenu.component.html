@@ -1,0 +1,63 @@
+<!--<nav class="navbar navbar-toggleable-md navbar-light Xbg-faded bg-primary navbar-inverse" Xstyle="background-color: #e3f2fd;">-->
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+    <i class="fa fa-navicon" style="cursor:pointer" (click)="onSideNavToggle()"></i>
+    <div class="container text-xs-center">
+        <span>{{sharedSrvc.companyName}} {{sharedSrvc.companyVersion}}</span>
+    </div>
+    <div class="container text-xs-center">
+        <!--<span style="text-align: center">{{currentTabTitle}}</span>-->
+        <span class="text-center" *ngIf="tabs.length > 0">{{tabs[selectedIndex].title}}</span>
+    </div>
+    <div class="nav navbar-nav pull-xs-right">
+        <span>{{fname}}</span>
+    </div>
+    <a href="#"><i class="fa fa-lock" style="cursor:pointer;margin-left: 10px"></i></a>
+    <!--<a><i class="fa fa-lock" (click)="router.navigateByUrl('/login')" style="cursor:pointer;margin-left: 10px"></i></a>-->
+</nav>
+
+<div id="wrapper" [ngClass]="{'toggled': sideNavClassToggled }">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <!--Active Tabs-->
+            <div *ngIf="tabs.length > 0">
+                <li>
+                    <div style='cursor: pointer'>
+                        Active Tasks
+                    </div>
+                    <div *ngFor="let tabA of tabs" style='cursor: pointer' class="sub-menu" (click)="addTab({prog:tabA.title, id:tabA.id})">
+                        {{tabA.title}}
+                        <!--<div class="pull-xs-right">-->
+                            <i class="fa fa-times-circle" (click)='removeTab(tabA)' style="padding-left: 5px;"></i>
+                        <!--</div>-->
+                    </div>
+                </li>
+            </div>
+            <!--Menu Items-->
+            <li *ngFor="let menu of menus">
+                <div style='cursor: pointer' (click)="toggleSelectSection(menu.index)">
+                    {{menu.groupname}}
+                    <!--<i class="fa fa-chevron-down pull-xs-right" [ngClass]="{'toggled' : isSectionSelected(menu.index)}"></i>-->
+                    <!--<i class="fa fa-chevron-down pull-xs-right"></i>-->
+                </div>
+                <!--Sub Menu Items-->
+                <div *ngIf="isSectionSelected(menu.index)" class="menu-toggle-list">
+                    <!--<md-button ng-click="mm.addTab(submenu)">-->
+                    <div *ngFor="let submenu of menu.submenu | orderBy: seq" style='cursor: pointer' class="sub-menu" (click)="addTab(submenu)">{{submenu.prog}}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <md-tab-group [(selectedIndex)]="selectedIndex">
+            <md-tab *ngFor="let tab of tabs" label="{{tab.title}}" id="{{tab.id}}">
+                <ng-container *ngComponentOutlet="ofGetComponent(tab.id)"></ng-container>
+            </md-tab>
+        </md-tab-group>
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->

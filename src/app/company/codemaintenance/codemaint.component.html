@@ -1,0 +1,24 @@
+<div Layout="column" class="widget-grid panel-nobox" [style.height.px]="wH">
+    <horizontal-split-pane #cdmsp01 primary-component-minsize="35" secondary-component-minsize="35" local-storage-key="split-pane"
+        (on-ended-resizing)="onSPChange($event)" >
+        <div class="split-pane-content-primary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span>Master</span>
+                <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+                <div fxFlex="flex"></div>
+                <span class="text-nowrap">Rows: {{dESrvc.rowCount(codemasterGrid)}}</span>
+            </nav>
+            <div id="cdmgrid01" [style.height.px]="gH01"></div>
+        </div>
+        <div class="split-pane-content-secondary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span>Details</span>
+                <button type="button" class="btn btn-success" (click)="codeAdd()"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn btn-danger" (click)="codeRemove()"><i class="fa fa-minus"></i> Remove</button>
+                <div class="container"></div>
+                <span style="white-space: nowrap;">Rows: {{dESrvc.rowCount(codedetailGrid)}}</span>
+            </nav>
+            <div id="cdmgrid02" [style.height.px]="gH02"></div>
+        </div>
+    </horizontal-split-pane>
+</div>

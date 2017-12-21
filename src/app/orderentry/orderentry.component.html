@@ -1,0 +1,219 @@
+<!--<md-tab-group [selectedIndex]="selectedTab">-->
+    <!--<md-tab label="List">-->
+    <!--<div *ngIf="selectedTab == 0">-->
+    <div [hidden]="selectedTab != 0">
+        <div layout="column" class="widget-grid panel-nobox" [style.height.px]="wH">
+            <horizontal-split-pane #oemsp01 primary-component-minsize="35" secondary-component-minsize="35" local-storage-key="split-pane"
+                                   (on-ended-resizing)="onSPChange($event)" >
+                <div class="split-pane-content-primary">
+                    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info" fxLayout="row">
+                        <span class="text-nowrap">Customer List</span>
+                        <button type="button" class="btn btn-success" (click)="customerCreateSO()" mdTooltip="For Selected Customer">New Order</button>
+                        <button type="button" class="btn btn-primary" (click)="selectedTab = 2; createSO();"><i class="fa fa-user"></i> New Customer</button>
+                        <button type="button" class="btn btn-secondary" (click)="selectedTab = 1; createSO({faid:132, fcid: 1});" mdTooltip="New Order For Walk-In">New Walk-In</button>
+                        <div fxFlex="flex"></div>
+                        <button type="button" class="btn btn-outline-primary" (click)="selectedTab=1;">Entry</button>
+                        <span class="text-nowrap">Rows: {{listCustomerGrid.rowCount()}}</span>
+                    </nav>
+                    <div class="subnavbar" fxLayout="row" fxLayoutAlign=" center">
+                        <span class="lmargin">Search By:</span>
+                        <md-radio-group [(ngModel)]="ctype" style="margin-top: 5px" class="lmargin">
+                            <md-radio-button value="N">Name</md-radio-button>
+                            <md-radio-button value="P">Phone</md-radio-button>
+                            <md-radio-button value="A">All Customers</md-radio-button>
+                        </md-radio-group>
+                        <button *ngIf="ctype=='A'" type="button" class="btn btn-primary" (click)="listCustomerGridSearch.valueChanges.next()"><i class="fa fa-search"></i> Search</button>
+                        <input *ngIf="ctype!='A'" type="text" class="form-control lmargin" placeholder="(Min 3 Characters)" style="width: 250px" [formControl]="listCustomerGridSearch">
+                    </div>
+                    <ag-grid-angular #oemGrid01 [gridOptions]="listCustomerGrid" style="width: 100%;" class="ag-fresh" [style.height.px]="gH01"></ag-grid-angular>
+                </div>
+                <div class="split-pane-content-secondary">
+                    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info" fxLayout="row">
+                        <span class="text-nowrap">Order List</span>
+                        <button type="button" class="btn btn-success" (click)="preRetrieveSO();">Edit Selected</button>
+                        <button type="button" class="btn btn-secondary" (click)="viewSODetails()">View Details</button>
+                        <div fxFlex="flex"></div>
+                        <span style="white-space: nowrap;">Rows: {{listSOGrid.rowCount()}}</span>
+                    </nav>
+                    <div class="subnavbar" fxLayout="row" fxLayoutAlign=" center">
+                        <md-radio-group [(ngModel)]="sotype" style="margin-top: 5px" class="lmargin">
+                            <md-radio-button value="C" mdTooltip="For Selected Customer">Customer</md-radio-button>
+                            <md-radio-button value="D">Dates From:</md-radio-button>
+                        </md-radio-group>
+                        <input type='date' [ngModel]="sodatef | date:'yyyy-MM-dd'" (ngModelChange)="sodatef = $event" class="form-control lmargin" style="width: 170px"/>
+                        <span class="lmargin">To:</span>
+                        <input type='date' [ngModel]="sodatet | date:'yyyy-MM-dd'" (ngModelChange)="sodatet = $event" class="form-control lmargin" style="width: 170px"/>
+                        <span class="lmargin">Status:</span>
+                        <select [(ngModel)]="sostatus" class="form-control lmargin" style="width: 150px;">
+                            <option *ngFor="let opt of orderstatus" [value]="opt.fid">
+                                {{opt.fdescription}}
+                            </option>
+                        </select>
+                        <button type="button" class="btn btn-primary" (click)="listSOGridRefresh()"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                    <ag-grid-angular [gridOptions]="listSOGrid" style="width: 100%;" class="ag-fresh" [style.height.px]="gH02"></ag-grid-angular>
+                </div>
+            </horizontal-split-pane>
+        </div>
+    </div>
+    <!--</md-tab>-->
+    <!--<md-tab label="Entry">-->
+    <div [hidden]="selectedTab != 1">
+        <div layout="column" class="widget-grid panel-nobox">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info" fxLayout="row">
+                <span class="text-nowrap">Order</span>
+                <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+                <button type="button" class="btn btn-warning" (click)="tender()"><i class="fa fa-money"></i> Payment</button>
+                <button type="button" class="btn btn-secondary" (click)="openDrawer()">Drawer</button>
+                <button type="button" class="btn btn-secondary" (click)="printSO(false)"><i class="fa fa-print"></i> Receipt</button>
+                <button type="button" class="btn btn-secondary" (click)="printWO()"><i class="fa fa-print"></i> Work Order</button>
+                <button type="button" class="btn btn-danger" (click)="void()">Void</button>
+                <button type="button" *ngIf="(sharedSrvc.user.fisadmin == true)" f class="btn btn-secondary" (click)="reopen()">Re-Open</button>
+                <div fxFlex="flex"></div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary nobutton" (click)="selectedTab=0">List</button>
+                    <button type="button" class="btn btn-outline-primary nobutton" (click)="selectedTab=2; gridRepaint('4');">Contacts</button>
+                </div>
+            </nav>
+            <div class="subnavbar" fxLayout="row" fxLayoutAlign=" center">
+                <input [(ngModel)]="searchId" (blur)="searchSONumber()" class="form-control" style="width: 140px;margin-left: 5px" placeholder="Ticket Number"/>
+                <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-success" (click)="createSOSameCust()" mdTooltip="For Current Customer">New Order</button>
+                <button type="button" class="btn btn-secondary" (click)="showCustomerHistory()" mdTooltip="View Past Orders">Customer History</button>
+                <span fxflex="flex" *ngIf="!validEntry()" class="alert-danger" style="padding: 10px">NO CHANGES CAN BE SAVED</span>
+            </div>
+
+            <div fxLayout="row">
+                <div fxLayout="column" fxFlex="flex">
+                    <div fxLayout="row">
+                        <form fxLayout="row" fxLayoutAlign=" center" fxFlex="flex">
+                            <span>Customer</span>
+                            <input type="text" value="{{displayContact()}}" class="form-control lmargin" readonly>
+                            <span class="text-nowrap lmargin">Last Update</span>
+                            <!--<input type="text" [ngModel]="salesordersCurrent.flastupdate | date:'yyyy/MM/dd h:mm a' salesordersCurrent.fby" [ngModelOptions]="{standalone: true}" class="form-control lmargin" readonly>-->
+                            <input type="text" value="{{salesordersCurrent.flastupdate | date:'yyyy/MM/dd h:mm a' : 'UTC'}} {{salesordersCurrent.fby}}" class="form-control lmargin" readonly>
+                        </form>
+                    </div>
+                    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                        <span class="text-nowrap">Details</span>
+                        <button type="button" class="btn btn-success" (click)="salesdetailsAdd()"><i class="fa fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-primary" (click)="salesdetailsInsert()"><i class="fa fa-plus"></i> Insert</button>
+                        <button type="button" class="btn btn-danger" (click)="salesdetailsRemove()"><i class="fa fa-minus"></i> Remove</button>
+                        <button type="button" class="btn btn-secondary" (click)="itemsList()">Item List</button>
+                        <button type="button" class="btn btn-secondary" (click)="viewEquipment()" mdTooltip="Information">Equipment</button>
+                        <div fxFlex="flex"></div>
+                        <span class="text-nowrap">Rows: {{dESrvc.rowCount(salesdetailsGrid)}}</span>
+                    </nav>
+                    <div id="oemg03" [style.height.px]="gH03"></div>
+
+                    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info" style="margin-top: 5px">
+                        <span class="text-nowrap">Order Logs</span>
+                        <button type="button" class="btn btn-success" (click)="logAdd()"><i class="fa fa-plus"></i> Add</button>
+                        <div fxFlex="flex"></div>
+                        <span class="text-nowrap">Rows: {{dESrvc.rowCount(solgGrid)}}</span>
+                    </nav>
+                    <div id="oemg05" style="height: 200px"></div>
+                </div>
+                <!--Total Column-->
+                <div style="width: 350px" fxLayout="column" class="lmargin rmargin">
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Ticket #:</span>
+                        <span fxFlex class="text-right fdocnumber">{{salesordersCurrent.fticket}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label text-nowrap">Order Date:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.fdate | date:'MM/dd/yyyy'}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label text-nowrap">Completed On:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.finvoicedate | date:'MM/dd/yyyy'}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Status:</span>
+                        <span fxFlex class="text-right">{{displayOrderStatus()}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Sub Total:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.fsubtotal | currency:'USD':true}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Discount:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.fdiscountamt | currency:'USD':true}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Tax:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.ftaxamt | currency:'USD':true}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label"><strong>Total:</strong></span>
+                        <span fxFlex class="text-right "><strong>{{salesordersCurrent.ftotal | currency:'USD':true}}</strong></span>
+                    </div>
+                    <p></p>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Payments:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.ftotalpayment | currency:'USD':true}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center">
+                        <span fxFlex="33" class="col-form-label">Balance:</span>
+                        <span fxFlex class="text-right amount">{{salesordersCurrent.fbalance | currency:'USD':true}}</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" center" *ngIf="salesordersCurrent.famtchange > 0">
+                        <span fxFlex="33" class="col-form-label">Change:</span>
+                        <span fxFlex class="text-right">{{salesordersCurrent.famtchange | currency:'USD':true}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--</md-tab>-->
+    <!--<md-tab label="Contacts">-->
+    <div [hidden]="selectedTab != 2">
+        <div class="widget-grid panel-nobox">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span class="text-nowrap">Address</span>
+                <div fxFlex="flex"></div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary nobutton" (click)="selectedTab=1; gridRepaint('3')">Entry</button>
+                </div>
+            </nav>
+            <form>
+                <div fxLayout="row" class="rmargin">
+                    <div class="form-group" fxFlex="flex">
+                        <label for="oemfaddress1">Address</label>
+                        <input type="text" class="form-control" id="oemfaddress1" placeholder="" [(ngModel)]="addressesCurrent.faddress" [ngModelOptions]="{standalone: true}" required>
+                    </div>
+                    <div class="form-group lmargin" fxFlex="flex">
+                        <label for="oemfaddress2">Line 2</label>
+                        <input type="text" class="form-control" id="oemfaddress2" placeholder="" [(ngModel)]="addressesCurrent.faddress2" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+                <div fxLayout="row" class="rmargin">
+                    <div class="form-group" fxFlex="flex">
+                        <label for="oemfcity">City</label>
+                        <input type="text" auto-complete list-formatter="fid" display-property-name="fid" select-value-of="fid" class="form-control" id="oemfcity" [source]="cityNames" [(ngModel)]="addressesCurrent.fcity" [ngModelOptions]="{standalone: true}" required>
+                    </div>
+                    <div class="form-group lmargin" fxFlex="flex">
+                        <label for="oemfstate">State</label>
+                        <input type="text" class="form-control" id="oemfstate" placeholder="" [(ngModel)]="addressesCurrent.fstate" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group lmargin" fxFlex="flex">
+                        <label for="oemfzip">Zip Code</label>
+                        <input type="text" class="form-control" id="oemfzip" placeholder="" [(ngModel)]="addressesCurrent.fzip" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+
+            </form>
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span class="text-nowrap">Contacts</span>
+                <button type="button" class="btn btn-success" (click)="contactsAdd()"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn btn-danger" (click)="contactsRemove()"><i class="fa fa-minus"></i> Remove</button>
+                <button type="button" class="btn btn-secondary" (click)="contactsAssign()" mdTooltip="Selected Contact">Assign</button>
+                <div fxFlex="flex"></div>
+                <span class="text-nowrap lmargin">Rows: {{dESrvc.rowCount(contactsGrid)}}</span>
+            </nav>
+            <div id="oemg04" [style.height.px]="gH04"></div>
+        </div>
+    </div>
+    <!--</md-tab>-->
+<!--</md-tab-group>-->
+<button type="button" #equipmentListButton (click)="equipmentList()" hidden>Test</button>

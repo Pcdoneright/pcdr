@@ -1,0 +1,13 @@
+<!--<div (window:resize)="onResize($event)" layout="column" class="widget-grid panel-nobox">-->
+<div layout="column" class="widget-grid panel-nobox">
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+        <span>Users</span>
+        <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+        <button type="button"class="btn btn-success" (click)="userAdd()"><i class="fa fa-plus"></i> Add</button>
+        <button type="button" class="btn btn-danger" (click)="userRemove()"><i class="fa fa-minus"></i> Remove</button>
+        <div class="container"></div>
+        <span class="text-nowrap">Rows: {{dESrvc.rowCount(userGrid)}}</span>
+    </nav>
+    <div id="umgrid01" [style.height.px] = "gHeight"></div>
+    <!--<div id="umgrid01" fxFill></div>-->
+</div>

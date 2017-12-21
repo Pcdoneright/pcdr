@@ -1,0 +1,14 @@
+.mfont {
+    font-size: 32px !important;
+    height: 2.5rem;
+}
+
+.mfont2 {
+    font-size: 22px !important;
+}
+
+.numPad {
+    margin-top: 10px;
+    height: 3.2rem !important;
+    min-width: 88px !important;
+}

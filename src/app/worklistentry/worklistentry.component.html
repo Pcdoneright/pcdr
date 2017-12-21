@@ -1,0 +1,42 @@
+<div layout="column" class="widget-grid panel-nobox" [style.height.px]="wH">
+    <horizontal-split-pane #wlesp01 primary-component-initialratio="0.8" local-storage-key="wlesp01"
+                           (on-ended-resizing)="onSPChange($event)" >
+        <div class="split-pane-content-primary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info" fxLayout="row">
+                <span class="text-nowrap">Work List</span>
+                <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+                <button type="button" class="btn btn-secondary" (click)="refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+                <button type="button" class="btn btn-secondary" (click)="viewDetails()">View Details</button>
+                <md-checkbox [(ngModel)]="completedOnly" class="text-nowrap" style="margin-top: 5px">Show Completed Only</md-checkbox>
+                <div fxFlex="flex"></div>
+                <!-- <span class="text-nowrap">Rows: {{dESrvc.rowCount(listWorkGrid)}}</span> -->
+                <span class="text-nowrap">Rows: {{wjH.rowCount(wlmgrid01)}}</span>
+            </nav>
+            <!-- <div id="wlmgrid01" [style.height.px]="gH01"></div> -->
+            <wj-flex-grid #wlmgrid01 [style.height.px] = "gH01"
+                (keydown)='wjH.onGridKeyPress(wlmgrid01, $event)' 
+                (gotFocus)='wjH.onGridGotFocus(wlmgrid01, $event)'
+                (selectionChanged)='wjH.onGridSelectionChanged(wlmgrid01, $event)'>
+            </wj-flex-grid>
+
+            <div class="d-flex" style="margin-top: 5px">
+                <div class="p-2">Notes</div>
+                <input type="text" class="form-control" [(ngModel)]="notesDisplay.fproblem" [ngModelOptions]="{standalone: true}" readonly>
+                <div class="p-2">Internal</div>
+                <input type="text" class="form-control" [(ngModel)]="notesDisplay.fnote" [ngModelOptions]="{standalone: true}">
+            </div>
+        </div>
+        <div class="split-pane-content-secondary">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                <span class="text-nowrap">Order Logs</span>
+                <button type="button" class="btn btn-success" (click)="logAdd()"><i class="fa fa-plus"></i> Add</button>
+                <div class="container"></div>
+                <!-- <span class="text-nowrap">Rows: {{dESrvc.rowCount(solgGrid)}}</span> -->
+                <span class="text-nowrap">Rows: {{wjH.rowCount(wlmgrid02)}}</span>
+            </nav>
+            <!-- <div id="wlmgrid02" [style.height.px]="gH02"></div> -->
+            <wj-flex-grid #wlmgrid02 [style.height.px] = "gH02">
+            </wj-flex-grid>
+        </div>
+    </horizontal-split-pane>
+</div>

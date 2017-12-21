@@ -1,0 +1,24 @@
+<div layout="column" class="widget-grid panel-nobox">
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+        <span>Items</span>
+        <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-save"></i> Save</button>
+        <button type="button"class="btn btn-success" (click)="itemAdd()"><i class="fa fa-plus"></i> Add</button>
+        <button type="button"class="btn btn-danger" (click)="itemRemove()"><i class="fa fa-minus"></i> Remove</button>
+        <div fxFlex="flex"></div>
+        <!-- <span class="text-nowrap">Rows: {{dESrvc.rowCount(itemGrid)}}</span> -->
+        <span class="text-nowrap">Rows: {{wjH.rowCount(img01)}}</span>
+    </nav>
+    <!-- <div id="imgrid01" [style.height.px] = "gHeight"></div> -->
+    <!-- <wj-flex-grid #img01 [itemsSource]="item.items"> -->
+    <wj-flex-grid #img01 [style.height.px] = "gHeight"
+        (keydown)='wjH.onGridKeyPress(img01,$event)' 
+        (gotFocus)='wjH.onGridGotFocus(img01,$event)'
+        (selectionChanged)='wjH.onGridSelectionChanged(img01,$event)'>
+            <!-- <wj-flex-grid-column [binding]="'fitemid'" [header]="'ID'" [width]="'90'"></wj-flex-grid-column> -->
+            <!-- <wj-flex-grid-column [binding]="'fdescription'" [header]='Description' [width]='*'></wj-flex-grid-column>
+            <wj-flex-grid-column [binding]="'finternal'" [header]='Internal' [width]='*'></wj-flex-grid-column>
+            <wj-flex-grid-column [binding]="fprice" [header]="Price" [width]='80' [format]='c'></wj-flex-grid-column>
+            <wj-flex-grid-column [binding]="ftaxable" [header]="Taxable" [width]='70' [dataType]='Boolean'></wj-flex-grid-column> -->
+            <!-- <wj-flex-grid-column binding='fcategory' header='Category' [dataMap]='actions'></wj-flex-grid-column> -->
+    </wj-flex-grid>
+</div>

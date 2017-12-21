@@ -1,0 +1,71 @@
+<div md-dialog-content style="padding: 0 5px;">
+    <div class="widget-grid panel-nobox">
+        <div fxLayout="column">
+            <div fxLayout="row">
+                <div fxLayout="column">
+                    <div style="background-color: #ededed;padding-left: 10px">
+                        <span class="mfont">{{ tenderamt | currency:'USD':true }}</span>
+                    </div>
+                    <div layout="column">
+                        <div layout="row">
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('7')">7</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('8')">8</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('9')">9</button>
+                        </div>
+                        <div layout="row">
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('4')">4</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('5')">5</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('6')">6</button>
+                        </div>
+                        <div layout="row">
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('1')">1</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('2')">2</button>
+                            <button type="button" class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('3')">3</button>
+                        </div>
+                        <div layout="row">
+                            <button type="button" flex class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount('.')">.</button>
+                            <button type="button" flex class="btn btn-outline-primary nobutton mfont numPad" (click)="tenderAmount(0)">0</button>
+                            <button type="button" flex class="btn btn-outline-primary nobutton numPad" (click)="tenderAmount('C')">Clear</button>
+                        </div>
+                    </div>
+                    <div layout="row" style="margin-top: 10px">
+                        <button type="button" class="btn btn-secondary" (click)="dialogRef.close(false)">Go Back</button>
+                        <button type="button" class="btn btn-warning" type="submit" (click)="onYes()">Complete</button>
+                    </div>
+                </div>
+
+                <div fxLayout="column">
+                    <button type="button" class="btn btn-primary" *ngFor="let payment of paymentTypes" style="margin: 0 10px 10px 10px"
+                            (click)="addPayment(payment)">{{payment.fdescription}}
+                    </button>
+                </div>
+
+                <div fxLayout="column" style="width: 450px">
+                    <div layout="row" style="background-color: #000; color: #fff; padding-left: 10px">
+                        <label class="mfont">Due: </label>
+                        <span fxFlex="flex" class="text-right" style="color: #00fd01; padding-right: 10px"><label
+                                class="mfont">{{salesorders.fbalance | currency:'USD':true}}</label></span>
+                    </div>
+                    <nav class="navbar navbar-toggleable-md navbar-inverse bg-info">
+                        <span class="text-nowrap">Payments</span>
+                        <button type="button" class="btn btn-danger" (click)="salespaymentRemove()"><i class="fa fa-minus"></i> Remove</button>
+                        <div fxFlex="flex"></div>
+                        <span class="text-nowrap">Rows: {{salespayments.items.length}}</span>
+                    </nav>
+                    <div id="oetdrg01" style="height: 220px"></div>
+                    <div layout="row" style="background-color: #000; color: #fff; padding-left: 10px">
+                        <label class="mfont2">Change: </label>
+                        <span fxFlex="flex" class="text-right" style="color: #00fd01; padding-right: 10px"><label
+                                class="mfont2">{{salesorders.famtchange | currency:'USD':true}}</label></span>
+                    </div>
+                </div>
+            </div>
+            <!--Quick Cash-->
+            <div layout="row" class="panel-nobox" layout-wrap style="width: 860px">
+                <button class="btn btn-success mfont numPad" *ngFor="let payment of quickCashList"
+                        (click)="quickCash(payment)">{{payment.fdescription}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

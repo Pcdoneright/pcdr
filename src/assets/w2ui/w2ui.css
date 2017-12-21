@@ -1,0 +1,98 @@
+.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-selected, .w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr td.w2ui-selected {
+    background-color: #606060 !important;
+    color: #f6f6f6!important;
+}
+
+/*.w2ui-reset table {
+    font-family: 'Helvetica Neue','Segoe UI',Helvetica,Verdana,sans-serif;
+    font-size: 14px!important;
+}*/
+
+/*.w2ui-grid .w2ui-grid-body table td.w2ui-grid-data {
+    margin-left: 7px!important;
+}*/
+
+ /* Fields */
+.w2ui-grid .w2ui-grid-body table td.w2ui-grid-data>div {
+    /*margin-left: 7px!important;*/
+    margin: 0 3px 0 3px !important;
+    font-size: 14px!important;
+}
+
+/* ComboBox */
+select.w2ui-input {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAALCAQAAACnzwd+AAAAcklEQVR4AcXMsQFBQQDG4P9tAgC0gJYRQJZgKQMwCqCku6vVAAAA+NJHP4KHOk0aV2pRw61n4BBmyOxKQ8I4ehZeuhd3HTx6DQEGZ7sBfr2OOOOj3Yi43kMKs9sZknofOexqZ8npMygwWZTX51CipP+YA1OiZJbYYg9lAAAAAElFTkSuQmCC'), -webkit-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
+}
+
+/* Column Header */
+.w2ui-grid .w2ui-grid-body div.w2ui-col-header {
+    height: 34px!important;
+    padding: 7px!important;
+}
+
+.w2ui-grid .w2ui-grid-body table .w2ui-head>div {
+    color: #767676!important;
+    font-weight: bold!important;
+}
+
+.w2ui-grid .w2ui-grid-body table .w2ui-head {
+    background: #f6f6f6 none!important;
+    border-bottom: 1px solid #d3d3d3!important;
+}
+
+.w2ui-grid .w2ui-grid-body div.w2ui-col-header > div.w2ui-sort-up {
+    margin-top: 0!important;
+    margin-right: 0!important;
+}
+.w2ui-grid .w2ui-grid-body div.w2ui-col-header > div.w2ui-sort-down {
+    margin-top: 5px!important;
+    margin-right: 0!important;
+}
+
+.w2ui-grid .w2ui-grid-body table .w2ui-head.w2ui-reorder-cols-head:hover {
+    cursor: default;
+}
+
+/* Entry Field Height */
+.w2ui-grid .w2ui-editable {
+    /*padding: 0 1px 0 1px !important;*/
+    height: 28px!important;
+}
+
+/*.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-even {
+    background-color: #f5f5f5;
+}*/
+
+/* Prevent Override */
+input:not([type=button]):disabled, select:disabled, textarea:disabled, input:not([type=button])[readonly], select[readonly], textarea[readonly] {
+    background-color: inherit;
+    color: inherit;
+}
+
+/* Summary Background */
+.w2ui-grid .w2ui-grid-summary table .w2ui-odd {
+    /*background-color: #f7f7f7 !important;*/
+    background-color: #fbfcfd !important;
+}
+
+/* Makes header 34px */
+.w2ui-grid .w2ui-grid-body table .w2ui-head > div {
+    padding: 12px 7px !important;
+    font-size: 12px;
+}
+
+/* TODO: Remove hover */
+/*.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-even:hover {*/
+    /*background-color: inherit!important;*/
+/*}*/
+
+/*.w2ui-grid .w2ui-grid-body .w2ui-grid-records table tr.w2ui-odd:hover {*/
+    /*background-color: inherit!important;*/
+/*}*/
+
